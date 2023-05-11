@@ -8,6 +8,7 @@ package cn.edu.guet;
  */
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -39,8 +40,11 @@ public class TicketServlet extends HttpServlet {
 
         List<Ticket> ticketList = TicketSearch.search(startStation, endStation, departureDate);
 
-        String json=JSON.toJSON(ticketList).toString();
+        String json=JSON.toJSONString(ticketList, SerializerFeature.PrettyFormat);
 
+        /**
+         * 把车次的JSON数据返回给浏览器（网页）
+         */
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out=response.getWriter();
         out.print(json);

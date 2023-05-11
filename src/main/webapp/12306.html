@@ -60,18 +60,32 @@
                 document.getElementById("train").appendChild(tr);
                 */
                 //   利用ajax对12306的后端《查询余票》接口进行请求
-
-
                 request = new XMLHttpRequest();
                 request.onreadystatechange = callBack;
-                request.open("GET", "https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date=2023-05-08&leftTicketDTO.from_station=GLZ&leftTicketDTO.to_station=GZQ&purpose_codes=ADULT");
+                //执行下面open之前要把三个input的的value拿到
+                startStation = document.getElementById("startStation").value;
+                endStation = document.getElementById("endStation").value;
+                departureDate = document.getElementById("departureDate").value;
+                console.log(startStation, endStation, departureDate);
+
+                request.open("GET", "/searchTicket?startStation=" + startStation + "&endStation=" + endStation + "&departureDate=" + departureDate);
                 request.send(null);
 
             }
         }
 
         function callBack() {
-            console.log("我是回调函数")
+            /*
+            回调：服务器响应成功后，利用回调函数拿到服务器返回的数据
+             */
+            if(request.readyState==4){
+                //请求完成
+                if(request.status==200){
+                    //通过request.resposneText来接收服务器返回的数据
+                    console.log("服务器返回车次数据：",request.responseText);
+                    // 数据如何以Table的形式呈现
+                }
+            }
         }
 
         function search() {
@@ -81,16 +95,13 @@
 </head>
 <body>
 
-<form action="/searchTicket" method="get">
+<label for="startStation">起始站：</label> <input id="startStation" type="text" name="startStation">
 
-    <label for="startStation">起始站：</label> <input id="startStation" type="text" name="startStation">
+<label for="endStation">终点站：</label> <input id="endStation" type="text" name="endStation">
 
-    <label for="endStation">终点站：</label> <input id="endStation" type="text" name="endStation">
+<label for="departureDate">出发日期：</label> <input id="departureDate" type="date" name="departureDate">
 
-    <label for="departureDate">出发日期：</label> <input id="departureDate" type="date" name="departureDate">
-
-    <button class="search" type="submit">查询</button>
-</form>
+<button class="search">查询</button>
 
 
 <!-- 先演示假数据，再进行真数据的操作 -->

@@ -30,7 +30,7 @@ public class TicketSearch {
         Matcher matcher = Pattern.compile("((?<=@)[^@]+)").matcher(stationNames);
         while (matcher.find()) {
             String tmp = matcher.group();
-            System.out.println(tmp);
+//            System.out.println(tmp);
             String[] contents = tmp.split("\\|");
             String name = contents[1];
             String code = contents[2];
